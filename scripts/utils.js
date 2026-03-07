@@ -55,7 +55,7 @@ export function getViteBuildConfig(options) {
         },
         plugins: banner
           ? [{
-              name: 'add-banner',
+              name: 'add-banner-and-global',
               generateBundle(_, bundle) {
                 for (const chunk of Object.values(bundle)) {
                   if (chunk.type === 'chunk') {
@@ -65,6 +65,18 @@ export function getViteBuildConfig(options) {
                     // Add main banner if not present
                     if (!code.startsWith('/*!')) {
                       code = `${banner}\n${code}`
+                    }
+                    // For UMD format, modify the wrapper to always expose global
+                    // even when AMD loader is present (fix for RequireJS environments)
+                    if (format === 'umd') {
+                      // Match both original and minified UMD patterns:
+                      // Original: typeof define === 'function' && define.amd ? define(factory) :
+                      // Minified: "function"===typeof define&&define.amd?define(e):
+                      // Change to: ... ? (global.Name = factory(), define(function() { return global.Name; })) :
+                      code = code.replace(
+                        /["']function["']\s*===?\s*typeof define\s*&&\s*define\.amd\s*\?\s*define\((\w+)\)\s*:/,
+                        `"function"==typeof define&&define.amd?(t.${name}=$1(),define(function(){return t.${name}})):`,
+                      )
                     }
                     chunk.code = code
                   }

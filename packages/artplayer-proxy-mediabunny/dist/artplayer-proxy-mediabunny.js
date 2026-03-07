@@ -4,7 +4,7 @@
  * (c) 2017-2026 Harvey Zhao
  * Released under the MIT License.
  */
-!function(e,t){"object"===typeof exports&&"undefined"!==typeof module?module.exports=t():"function"===typeof define&&define.amd?define(t):(e="undefined"!==typeof globalThis?globalThis:e||self).ArtplayerProxyMediabunny=t()}(this,function(){"use strict";class e{constructor(){this.listeners=new Map}addEventListener(e,t){this.listeners.has(e)||this.listeners.set(e,[]),this.listeners.get(e).push(t)}removeEventListener(e,t){const r=this.listeners.get(e);if(!r)return;const i=r.indexOf(t);i>=0&&r.splice(i,1)}emit(e,t){const r=new Event(e);r.detail=t;const i=this.listeners.get(e);i&&i.forEach(e=>e(r))}}
+!function(e,t){"object"===typeof exports&&"undefined"!==typeof module?module.exports=t():"function"==typeof define&&define.amd?(t.ArtplayerProxyMediabunny=t(),define(function(){return t.ArtplayerProxyMediabunny})):(e="undefined"!==typeof globalThis?globalThis:e||self).ArtplayerProxyMediabunny=t()}(this,function(){"use strict";class e{constructor(){this.listeners=new Map}addEventListener(e,t){this.listeners.has(e)||this.listeners.set(e,[]),this.listeners.get(e).push(t)}removeEventListener(e,t){const r=this.listeners.get(e);if(!r)return;const i=r.indexOf(t);i>=0&&r.splice(i,1)}emit(e,t){const r=new Event(e);r.detail=t;const i=this.listeners.get(e);i&&i.forEach(e=>e(r))}}
 /*!
    * Copyright (c) 2025-present, Vanilagy and contributors
    *
